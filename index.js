@@ -76,8 +76,11 @@ app.use((req, res, next) => {
 
 app.post("/ibeacons", (req, res) => {
 
-    const formatted = formatDataForMovex(req.body);
-    console.log("Formatted:", JSON.stringify(formatted, null, 2));
+    const rawData = req.body; 
+    console.log("Received Data:", JSON.stringify(rawData, null, 2));
+
+    // const formatted = formatDataForMovex(req.body);
+    // console.log("Formatted:", JSON.stringify(formatted, null, 2));
 
     sendToMovex(formatted);
 

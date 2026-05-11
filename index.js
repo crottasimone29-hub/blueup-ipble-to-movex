@@ -21,7 +21,6 @@ function formatDataForMovex(data) {
 }
 
 function sendToMovex(beaconData) {
-    const movexApiUrl = "https://movex.awswitch.com/api/v01/pdr";
     const requestPayload = JSON.stringify(beaconData);
     
     const httpsOptions = {

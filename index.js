@@ -13,12 +13,15 @@ function formatDataForMovex(data) {
         .map((beacon) => ({
             mac: beacon.bdaddr,
             rssi: beacon.rssi,
-            timestamp: beacon.timestamp,
+            timestamp: new Date(beacon.timestamp).getTime(),
         }))
         .filter((packet) => packet.mac && typeof packet.rssi === "number" && packet.timestamp);
 
     if (packets.length === 0) {
-        return null;
+        return {
+            gateway: "b827ebffdff2",
+            packets,
+        };
     }
 
     return {
@@ -28,11 +31,6 @@ function formatDataForMovex(data) {
 }
 
 function sendToMovex(beaconData) {
-    if (!beaconData || !Array.isArray(beaconData.packets) || beaconData.packets.length === 0) {
-        console.warn("No valid beacon data to send to MovEx.");
-        return;
-    }
-
     const requestPayload = JSON.stringify(beaconData);
 
     const httpsOptions = {
@@ -95,8 +93,8 @@ app.post("/ibeacons", (req, res) => {
 
     const formatted = formatDataForMovex(rawData);
     if (!formatted) {
-        console.warn("Invalid or empty beacon payload received.");
-        return res.status(400).json({ status: "error", message: "Invalid payload or no valid beacons." });
+        console.warn("Invalid beacon payload received.");
+        return res.status(400).json({ status: "error", message: "Invalid payload." });
     }
 
     console.log("Formatted:", JSON.stringify(formatted, null, 2));

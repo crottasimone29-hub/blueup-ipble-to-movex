@@ -9,7 +9,7 @@ function formatDataForMovex(data) {
     if (!data) return;
 
     return {
-        gateway: data.gateway,
+        gateway: "b827ebffdff2",
         packets: data.data.beacons
             .filter((beacon) => beacon.ibeacon && beacon.ibeacon.length > 0)
             .map((beacon) => ({
